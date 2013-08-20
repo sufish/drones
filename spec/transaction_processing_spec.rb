@@ -10,9 +10,9 @@ describe 'Transaction Processing' do
       true
     end
 
-    Drone::Producer.send_transaction_confirmation(1, {:param1 => '1', :param2 => '2'})
+    Drone::Producer.send_transaction_confirmation('1', {:param1 => '1', :param2 => '2'})
     sleep 0.5
-    received_trans_id.should == 1
+    received_trans_id.should == '1'
     received_params.param1.should == '1'
     received_params.param2.should == '2'
   end

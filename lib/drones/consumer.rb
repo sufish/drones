@@ -40,7 +40,7 @@ class Drone
             transaction = OpenStruct.new(Oj.load(payload))
             params = OpenStruct.new(transaction.params)
             trans_id = transaction.trans_id
-            confirm_success = yield trans_id.to_i, params if block_given?
+            confirm_success = yield trans_id, params if block_given?
             if confirm_success
               Drone.instance.channel.acknowledge(delivery_info.delivery_tag, false)
             else
