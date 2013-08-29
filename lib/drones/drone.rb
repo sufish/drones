@@ -24,7 +24,7 @@ class Drone
   class << self
     def connect(mq_uri)
       begin
-        Drone.instance.connection = Bunny.new(mq_uri)
+        Drone.instance.connection = Bunny.new(mq_uri, socket_timeout: 0)
         Drone.instance.connection.start
         Drone.instance.channel = Drone.instance.connection.create_channel
         logger.info "connection to #{mq_uri} is established"
