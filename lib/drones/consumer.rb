@@ -8,12 +8,12 @@ class Drone
         Drone.logger
       end
 
-      def consume_sms
+      def consume_sms(blocking = false)
         exchange = Drone.instance.channel.direct(MESSAGING_EXCHANGE, durable: true)
         queue = Drone.instance.channel.queue(SMS_QUEUE_NAME, :durable => true, :auto_delete => false)
         queue.bind(exchange, routing_key: SMS_ROUTING_KEY)
 
-        queue.subscribe ack: true do |delivery_info, properties, payload|
+        queue.subscribe(ack: true, block: blocking) do |delivery_info, _, payload|
           send_success = true
           begin
             sms = OpenStruct.new(Oj.load(payload))
@@ -30,11 +30,11 @@ class Drone
         end
       end
 
-      def consume_transaction_confirm
+      def consume_transaction_confirm(blocking = false)
         exchange = Drone.instance.channel.direct(TRANSACTION_EXCHANGE, durable: true)
         queue =  Drone.instance.channel.queue(TRANSACTION_QUEUE_NAME, :durable => true, :auto_delete => false)
         queue.bind(exchange, routing_key: TRANSACTION_ROUTING_KEY)
-        queue.subscribe ack: true do |delivery_info, properties, payload|
+        queue.subscribe(ack: true, block: blocking) do |delivery_info, _, payload|
           confirm_success = true
           begin
             transaction = OpenStruct.new(Oj.load(payload))
