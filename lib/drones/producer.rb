@@ -17,10 +17,10 @@ class Drone
         end
       end
 
-      def send_transaction_confirmation(trans_id, params)
+      def send_transaction_confirmation(trans_id)
         begin
           exchange = Drone.instance.channel.direct(TRANSACTION_EXCHANGE, durable: true)
-          transaction_json = Oj.dump({trans_id: trans_id, params: params})
+          transaction_json = Oj.dump({trans_id: trans_id})
           exchange.publish(transaction_json, persistent: true, routing_key: TRANSACTION_ROUTING_KEY)
           true
         rescue Exception => e
