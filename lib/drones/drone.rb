@@ -32,5 +32,9 @@ class Drone
         raise DroneConnectionError, e.message
       end
     end
+
+    def close
+      Drone.instance.connection.close
+    end
   end
 end
