@@ -1,4 +1,5 @@
 require_relative 'drone'
+require_relative 'connection_level_exception'
 require 'ostruct'
 
 class Drone
@@ -23,6 +24,8 @@ class Drone
             else
               Drone.instance.channel.reject(delivery_info.delivery_tag, true)
             end
+          rescue Bunny::Exception => e
+            raise ConnectionLevelException, e.message
           rescue StandardError => e
             logger.error "message is discarded due to #{e.message}"
             Drone.instance.channel.reject(delivery_info.delivery_tag, false)
@@ -45,6 +48,8 @@ class Drone
             else
               Drone.instance.channel.reject(delivery_info.delivery_tag, true)
             end
+          rescue Bunny::Exception => e
+            raise ConnectionLevelException, e.message
           rescue StandardError => e
             logger.error "transaction is discarded due to #{e.message}"
             Drone.instance.channel.reject(delivery_info.delivery_tag, false)
