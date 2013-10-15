@@ -2,7 +2,6 @@ require 'rspec'
 require 'rspec/autorun'
 require 'simplecov'
 require 'simplecov-rcov'
-require 'ostruct'
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
     SimpleCov::Formatter::RcovFormatter

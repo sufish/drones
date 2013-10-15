@@ -2,6 +2,7 @@ require 'bunny'
 require 'active_support/core_ext/class/attribute_accessors'
 require 'logger'
 require 'oj'
+require 'ostruct'
 require_relative 'connection_level_exception'
 class Drone
   cattr_accessor :logger
