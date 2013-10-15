@@ -17,7 +17,7 @@ require_relative '../lib/drones'
 RSpec.configure do |config|
   config.before(:suite) do
     #make sure rabbit server is running when do test
-    Drone.connect('amqp://127.0.0.1:5672')
+    CONN = Drone.new('amqp://127.0.0.1:5672')
   end
 end
 
