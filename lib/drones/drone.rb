@@ -48,6 +48,17 @@ class Drone
     end
   end
 
+  def send_sms_special(mobile, content, priority = 100, name)
+    begin
+      puts 'fuck here'
+      exchange = @channel.direct(MESSAGING_EXCHANGE, durable: true)
+      sms_json = Oj.dump({mobile: mobile, content: content, priority: priority})
+      exchange.publish(sms_json, persistent: true, routing_key: name)
+    rescue Bunny::Exception => e
+      raise Drones::ConnectionLevelException, e.message
+    end
+  end
+
   def send_sms(mobile, content, priority = 100)
     begin
       exchange = @channel.direct(MESSAGING_EXCHANGE, durable: true)
